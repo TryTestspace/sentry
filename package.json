@@ -126,7 +126,12 @@
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
       "<rootDir>/node_modules/reflux"
-    ]
+    ],
+    "testResultsProcessor": "jest-junit"
+  },
+  "jest-junit": {
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
   },
   "devDependencies": {
     "@percy-io/react-percy-storybook": "^1.0.2",
@@ -147,6 +152,7 @@
     "eslint-plugin-react": "7.4.0",
     "jest": "21.2.1",
     "jest-glamor-react": "^3.1.2",
+    "jest-junit": "^3.1.0",
     "prettier": "1.7.4",
     "sinon": "1.17.2",
     "sinon-chai": "2.8.0",
