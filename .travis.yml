@@ -13,6 +13,7 @@ cache:
 branches:
   only:
   - master
+  - add-test-reporting 
 addons:
   apt:
     sources:
@@ -30,6 +31,10 @@ env:
     - TRAVIS_NODE_VERSION=8.9.1
     - CXX=g++-4.8
     - SOUTH_TESTS_MIGRATE=1
+before_install:
+  - mkdir -p $HOME/bin
+  - curl -fsSL https://testspace-client.s3.amazonaws.com/testspace-linux.tgz | tar -zxvf- -C $HOME/bin
+  - testspace config url $TS_ORG.testspace.com
 install:
   - 'export PATH=$PATH:~/.bin'
   - nvm install $TRAVIS_NODE_VERSION
@@ -57,6 +62,12 @@ after_failure:
   - zeus upload -t "text/plain+pycodestyle" flake8.pycodestyle.log
   - zeus upload -t "text/xml+checkstyle" eslint.checkstyle.xml
 # each attribute in the matrix will override the global attribute
+after_script:
+  - if [[ -n "${DB}" ]] && [[ "${TEST_SUITE}" != "network" ]]; then
+      testspace [$TEST_SUITE]junit.xml{tests};
+    elif [[ "${TEST_SUITE}" = "network" ]] || [[ "${TEST_SUITE}" = "js" ]] || [[ "${TEST_SUITE}" = "acceptance" ]]; then
+      testspace junit.xml{tests};
+    fi
 matrix:
   fast_finish: true
   allow_failures:
