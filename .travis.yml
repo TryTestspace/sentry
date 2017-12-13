@@ -14,6 +14,7 @@ branches:
   only:
   - master
   - add-test-reporting 
+  - try-zeus
 addons:
   apt:
     sources:
